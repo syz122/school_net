@@ -152,6 +152,20 @@
             background: #cccccc;
             cursor: not-allowed;
         }
+
+        .beta-tag {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 15px;
+            color: #999;
+        }
+
+        @media screen and (max-width: 500px) {
+            .beta-tag {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -200,6 +214,8 @@
                 </div>
             </form>
         </div>
+
+        <div class="beta-tag">内测版</div>
     </div>
 
     <script>
