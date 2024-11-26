@@ -1,0 +1,953 @@
+:root {
+    --background-color: #f5f5f0;
+    --text-color: #333;
+    --header-bg: #f8f9fa;
+    --drawer-bg: #ffffff;
+    --button-bg: #f8f9fa;
+    --button-hover: #e9ecef;
+    --modal-bg: #ffffff;
+    --input-bg: #ffffff;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+    --logo-color: #333;
+    --main-bg: #ffffff;
+    --drawer-button-color: #666;
+    --drawer-button-hover: #333;
+}
+
+[data-theme="dark"] {
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+    --header-bg: #2d2d2d;
+    --drawer-bg: #2d2d2d;
+    --button-bg: #3d3d3d;
+    --button-hover: #4d4d4d;
+    --modal-bg: #2d2d2d;
+    --input-bg: #3d3d3d;
+    --box-shadow: rgba(0, 0, 0, 0.3);
+    --logo-color: #ffffff;
+    --main-bg: #1a1a1a;
+    --drawer-button-color: #cccccc;
+    --drawer-button-hover: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0;
+}
+
+header {
+    height: 10vh;
+    background-color: var(--header-bg);
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px var(--box-shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--logo-color);
+    letter-spacing: 2px;
+}
+
+.drawer-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--drawer-button-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.drawer-button:hover {
+    color: var(--drawer-button-hover);
+}
+
+main {
+    min-height: 90vh;
+    padding: 12vh 1rem 1rem 1rem;
+    background-color: var(--main-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    overflow-y: auto;
+    margin: 0;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -240px;
+    width: 240px;
+    min-height: fit-content;
+    max-height: 80vh;
+    background-color: var(--drawer-bg);
+    box-shadow: -2px 0 5px var(--box-shadow);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.drawer.open {
+    right: 0;
+}
+
+.drawer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.drawer-item {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.drawer-item:last-child {
+    margin-bottom: 0;
+}
+
+.drawer-item:hover {
+    background-color: var(--button-hover);
+}
+
+.drawer-item i {
+    width: 20px;
+}
+
+#logoutBtn {
+    margin-top: auto;
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+#logoutBtn:hover {
+    background-color: #ffcdd2;
+}
+
+#themeBtn {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+#themeBtn:hover {
+    background-color: #e1bee7;
+}
+
+#settingsBtn {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+#settingsBtn:hover {
+    background-color: #bbdefb;
+}
+
+/* 添加暗色主题下的按钮样式 */
+[data-theme="dark"] #logoutBtn,
+[data-theme="dark"] #themeBtn-guest,
+[data-theme="dark"] #themeBtn-user,
+[data-theme="dark"] #settingsBtn {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] #logoutBtn:hover,
+[data-theme="dark"] #themeBtn-guest:hover,
+[data-theme="dark"] #themeBtn-user:hover,
+[data-theme="dark"] #settingsBtn:hover {
+    background-color: var(--button-hover);
+}
+
+/* 模态窗口样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-container {
+    display: flex;
+    gap: 20px;
+}
+
+.tab-btn {
+    border: none;
+    background: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    position: relative;
+}
+
+.tab-btn.active {
+    color: #1976d2;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #1976d2;
+}
+
+.close-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.tab-panel {
+    display: none;
+    padding: 20px;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #1565c0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 添加贴子相关样式 */
+.post {
+    width: 85%;
+    margin: 0 auto 20px auto;
+    background-color: var(--drawer-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 5px var(--box-shadow);
+    transition: background-color 0.3s;
+}
+
+.post-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 40px;
+}
+
+.post-info {
+    display: flex;
+    align-items: center;
+}
+
+.post-author {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.post-time {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-size: 0.9em;
+}
+
+.post-actions {
+    position: relative;
+}
+
+.more-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.more-btn:hover {
+    color: var(--text-color);
+}
+
+.post-content {
+    padding-top: 10px;
+}
+
+.post-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.post-text {
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* 暗色主题下的特殊样式 */
+[data-theme="dark"] .post-time {
+    color: #999;
+}
+
+[data-theme="dark"] .more-btn {
+    color: #999;
+}
+
+[data-theme="dark"] .more-btn:hover {
+    color: #fff;
+}
+
+/* 添加评论区样式 */
+.post-comments {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--box-shadow);
+}
+
+.comment-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.comment-user {
+    color: var(--text-color);
+    font-weight: 500;
+    min-width: 70px;
+}
+
+.comment-box {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--box-shadow);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.reply-btn {
+    padding: 8px 16px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reply-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comment-item {
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.comment-item:hover {
+    background-color: var(--button-bg);
+}
+
+.comment-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.comment-main {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+}
+
+.comment-author {
+    color: var(--text-color);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.comment-text {
+    color: var(--text-color);
+}
+
+.comment-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-time {
+    color: #666;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.comment-more {
+    padding: 4px 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.comment-item:hover .comment-more {
+    opacity: 1;
+}
+
+[data-theme="dark"] .comment-time {
+    color: #999;
+}
+
+/* 暗色主题下的特殊样式 */
+[data-theme="dark"] .comment-box {
+    border-color: #444;
+}
+
+/* 修改发帖按钮样式 */
+.create-post-btn {
+    position: fixed;
+    top: 10vh;  /* 与header高度一致，紧贴header底部 */
+    right: 8%;
+    width: 40px;
+    height: 40px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+    transform: translateY(-50%);  /* 向上偏移自身高度的一半，使其跨在header边界上 */
+}
+
+.create-post-btn:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+
+/* 暗色主题下的样式 */
+[data-theme="dark"] .create-post-btn {
+    background-color: #2196f3;
+}
+
+[data-theme="dark"] .create-post-btn:hover {
+    background-color: #1976d2;
+}
+
+/* 最后一个贴子的底部margin也可以调整 */
+.post:last-child {
+    margin-bottom: 0;  /* 移除最后一个贴子的底部外边距 */
+}
+
+/* 添加发帖表单相关样式 */
+.post-form-container {
+    padding: 20px;
+}
+
+.post-title-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--box-shadow);
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.post-content-input {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    border: 1px solid var(--box-shadow);
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* 暗色主题下的样式 */
+[data-theme="dark"] .post-title-input,
+[data-theme="dark"] .post-content-input {
+    border-color: #444;
+}
+
+.modal-header h2 {
+    color: var(--text-color);
+    font-size: 1.5em;
+    margin: 0;
+}
+
+/* 编辑器工具栏样式 */
+.editor-toolbar {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background-color: var(--button-bg);
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--box-shadow);
+    border-bottom: none;
+}
+
+.toolbar-btn {
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.toolbar-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.toolbar-btn.active {
+    background-color: var(--button-hover);
+    color: #1976d2;
+}
+
+.toolbar-divider {
+    width: 1px;
+    background-color: var(--box-shadow);
+    margin: 0 5px;
+}
+
+/* 编辑器内容区域样式 */
+.editor-content {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    border: 1px solid var(--box-shadow);
+    border-radius: 0 0 6px 6px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    overflow-y: auto;
+    outline: none;
+}
+
+.editor-content[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #666;
+}
+
+/* 图片预览区域样式 */
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px var(--box-shadow);
+    transition: transform 0.3s ease;
+}
+
+.image-preview:hover {
+    transform: scale(1.05);
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 68, 68, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.image-preview .remove-image:hover {
+    background-color: rgba(255, 68, 68, 1);
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .editor-content[placeholder]:empty:before {
+    color: #999;
+}
+
+/* 修改贴子中的图片显示样式 */
+.post-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.post-images img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;  /* 保持图片比例并填充容器 */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.post-images img:hover {
+    transform: scale(1.02);
+}
+
+/* 图片查看器样式 */
+.image-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-viewer.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.image-viewer-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.image-viewer-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+.close-viewer {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-viewer:hover {
+    color: #ddd;
+}
+
+/* 添加贴子菜单样式 */
+.post-actions {
+    position: relative;
+}
+
+.post-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--drawer-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--box-shadow);
+    min-width: 120px;
+    display: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.post-menu.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.menu-item {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: var(--button-hover);
+}
+
+.menu-item i {
+    font-size: 14px;
+    width: 16px;
+}
+
+.delete-post {
+    color: #dc3545;
+}
+
+.delete-post:hover {
+    background-color: #ffebee;
+}
+
+[data-theme="dark"] .delete-post:hover {
+    background-color: #4a1f1f;
+}
+
+/* 修改确认弹窗样式 */
+.confirm-dialog {
+    width: 300px !important;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.confirm-header {
+    padding: 8px;
+    text-align: right;
+}
+
+.close-confirm {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 16px;
+}
+
+.confirm-body {
+    padding: 0 24px 24px;
+    text-align: center;
+}
+
+.confirm-body p {
+    color: var(--text-color);
+    margin: 0;
+    font-size: 16px;
+}
+
+.confirm-footer {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.confirm-footer button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.cancel-btn {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+}
+
+.cancel-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.confirm-btn {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+}
+
+.confirm-btn:hover {
+    background-color: var(--button-hover);
+}
+
+/* 修改评论菜单样式 */
+.comment-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--drawer-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--box-shadow);
+    min-width: 100px;
+    display: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.comment-menu.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.comment-actions {
+    position: relative;
+}
+
+/* 修改评论菜单中删除按钮的样式 */
+.comment-menu .delete-comment {
+    color: #dc3545;  /* 与贴子删除按钮相同的红色 */
+}
+
+.comment-menu .delete-comment:hover {
+    background-color: #ffebee;  /* 与贴子删除按钮相同的悬停背景色 */
+}
+
+[data-theme="dark"] .comment-menu .delete-comment:hover {
+    background-color: #4a1f1f;  /* 深色主题下的悬停背景色 */
+}
+
+/* 确保贴子删除按钮样式保持不变 */
+.post-menu .delete-post {
+    color: #dc3545;
+}
+
+.post-menu .delete-post:hover {
+    background-color: #ffebee;
+}
+
+[data-theme="dark"] .post-menu .delete-post:hover {
+    background-color: #4a1f1f;
+}
+  
